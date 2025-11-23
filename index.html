@@ -5,39 +5,479 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bryce Zhou Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css"> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            background-color: #f5f7fa;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #2c3e50 0%, #1a2530 100%);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .menu {
+            padding: 20px 0;
+        }
+
+        .menu-section {
+            margin-bottom: 10px;
+        }
+
+        .menu-section h3 {
+            padding: 10px 20px;
+            font-size: 14px;
+            color: #bdc3c7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 3px solid #3498db;
+        }
+
+        .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 3px solid #3498db;
+        }
+
+        .menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .submenu {
+            margin-left: 20px;
+            display: none;
+        }
+
+        .submenu.active {
+            display: block;
+        }
+
+        .submenu .menu-item {
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+
+        .submenu .submenu {
+            margin-left: 20px;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .stat-icon {
+            align-self: flex-end;
+            font-size: 40px;
+            opacity: 0.2;
+            margin-top: 10px;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 992px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Chart Section */
+        .chart-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .chart-section h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 18px;
+        }
+
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+
+        /* Tasks Panel */
+        .tasks-panel {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .tasks-panel h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 18px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            color: white;
+        }
+
+        .task-icon.red {
+            background-color: #e74c3c;
+        }
+
+        .task-icon.orange {
+            background-color: #e67e22;
+        }
+
+        .task-icon.green {
+            background-color: #2ecc71;
+        }
+
+        .task-icon.purple {
+            background-color: #9b59b6;
+        }
+
+        /* Table Section */
+        .table-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+
+        .table-section h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+            padding: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        /* Page Content */
+        .page-content {
+            display: none;
+        }
+        
+        .page-content.active {
+            display: block;
+        }
+        
+        .content-card {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .content-card h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        
+        .content-card p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .content-card ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .content-card li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .lecture-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .lecture-card {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .lecture-card h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .lecture-card p {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                overflow: visible;
+            }
+            
+            .logo h1, .menu-section h3, .menu-item span {
+                display: none;
+            }
+            
+            .menu-item {
+                justify-content: center;
+                padding: 15px;
+            }
+            
+            .menu-item i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
 <body>
     <div class="sidebar">
         <div class="logo">
             <h1>Bryce Zhou</h1>
         </div>
-
+        
         <div class="menu">
             <div class="menu-section">
-                <h3>Main Navigation</h3>
-                <div class="menu-item active" data-page="institute">
-                    <i class="fas fa-university"></i>
-                    <span>Institute (Index)</span>
+                <h3>Institute</h3>
+                <div class="menu-item active" data-page="introduction">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Introduction</span>
                 </div>
-                <div class="menu-item" data-page="teaching">
+            </div>
+            
+            <div class="menu-section">
+                <h3>Study</h3> <div class="menu-item" data-page="lectures">
                     <i class="fas fa-chalkboard-teacher"></i>
-                    <span>Teaching</span>
+                    <span>Lectures</span>
                 </div>
-                <div class="menu-item" data-page="publication">
-                    <i class="fas fa-book-open"></i>
-                    <span>Publication</span>
+                <div class="menu-item" data-page="charts">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Charts</span>
+                </div>
+                <div class="menu-item" data-page="tabs">
+                    <i class="fas fa-folder"></i>
+                    <span>Tabs & Panels</span>
+                </div>
+                <div class="menu-item" data-page="tables">
+                    <i class="fas fa-table"></i>
+                    <span>Responsive Tables</span>
+                </div>
+                <div class="menu-item" data-page="forms">
+                    <i class="fas fa-edit"></i>
+                    <span>Forms</span>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h3>Publication</h3> <div class="menu-item" id="dropdown-toggle">
+                    <i class="fas fa-sitemap"></i>
+                    <span>Multi-Level Dropdown</span>
+                    <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
+                </div>
+                
+                <div class="submenu" id="dropdown-menu">
+                    <div class="menu-item" data-page="journal">
+                        <span>Journal</span>
+                    </div>
+                    <div class="menu-item" data-page="conference">
+                        <span>Conference</span>
+                    </div>
+                    <div class="menu-item" data-page="talk">
+                        <span>Talk</span>
+                    </div>
+                    
+                    <div class="menu-item" id="third-level-toggle">
+                        <span>Video</span>
+                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
+                    </div>
+                    
+                    <div class="submenu" id="third-level-menu">
+                        <div class="menu-item" data-page="video1">
+                            <span>Video Tutorials</span>
+                        </div>
+                        <div class="menu-item" data-page="video2">
+                            <span>Conference Recordings</span>
+                        </div>
+                        <div class="menu-item" data-page="video3">
+                            <span>Lecture Recordings</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item" data-page="empty">
+                    <i class="far fa-file"></i>
+                    <span>Empty Page</span>
                 </div>
             </div>
         </div>
     </div>
-
+    
     <div class="main-content">
-        
-        <div class="page-content active" id="institute">
+        <div class="page-content active" id="introduction">
             <div class="header">
-                <h1>Institute Introduction and Dashboard</h1>
-                <p>Welcome to the institute. Here are some key metrics and quick actions for the Institute.</p>
+                <h1>Introduction of the Institute</h1>
+                <p>Welcome to the institute. Here are some basic introduction of the institute!</p>
             </div>
             
             <div class="stats">
@@ -48,6 +488,7 @@
                         <i class="fas fa-chart-line"></i>
                     </div>
                 </div>
+                
                 <div class="stat-card">
                     <div class="stat-value">52,160</div>
                     <div class="stat-label">Sales</div>
@@ -55,6 +496,7 @@
                         <i class="fas fa-shopping-cart"></i>
                     </div>
                 </div>
+                
                 <div class="stat-card">
                     <div class="stat-value">15,823</div>
                     <div class="stat-label">Comments</div>
@@ -62,6 +504,7 @@
                         <i class="fas fa-comments"></i>
                     </div>
                 </div>
+                
                 <div class="stat-card">
                     <div class="stat-value">36,752</div>
                     <div class="stat-label">No. of Visits</div>
@@ -70,7 +513,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <div class="content-grid">
                 <div class="left-column">
                     <div class="chart-section">
@@ -81,7 +524,7 @@
                     </div>
                     
                     <div class="table-section">
-                        <h3>Responsive Table Example (Quick Overview)</h3>
+                        <h3>Responsive Table Example</h3>
                         <table>
                             <thead>
                                 <tr>
@@ -93,34 +536,72 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td>1</td><td>John</td><td>Doe</td><td>John15482</td><td>name@site.com</td></tr>
-                                <tr><td>2</td><td>Kimsila</td><td>Marriye</td><td>Kim1425</td><td>name@site.com</td></tr>
-                                <tr><td>3</td><td>Roseye</td><td>Nermal</td><td>Rosey1245</td><td>name@site.com</td></tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>John</td>
+                                    <td>Doe</td>
+                                    <td>John15482</td>
+                                    <td>name@site.com</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Kimsila</td>
+                                    <td>Marriye</td>
+                                    <td>Kim1425</td>
+                                    <td>name@site.com</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Roseye</td>
+                                    <td>Nermal</td>
+                                    <td>Rosey1245</td>
+                                    <td>name@site.com</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-
+                
                 <div class="right-column">
                     <div class="tasks-panel">
                         <h3>Tasks Panel</h3>
-                        <div class="task-item"><div class="task-icon red"><i class="fas fa-comment"></i></div><div class="task-text">Commented on a post</div></div>
-                        <div class="task-item"><div class="task-icon orange"><i class="fas fa-shipping-fast"></i></div><div class="task-text">Order 392 shipped</div></div>
-                        <div class="task-item"><div class="task-icon green"><i class="fas fa-file-invoice-dollar"></i></div><div class="task-text">Invoice 653 has paid</div></div>
-                        <div class="task-item"><div class="task-icon purple"><i class="fas fa-user-plus"></i></div><div class="task-text">A new user has been added</div></div>
+                        <div class="task-item">
+                            <div class="task-icon red">
+                                <i class="fas fa-comment"></i>
+                            </div>
+                            <div class="task-text">Commented on a post</div>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-icon orange">
+                                <i class="fas fa-shipping-fast"></i>
+                            </div>
+                            <div class="task-text">Order 392 shipped</div>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-icon green">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                            </div>
+                            <div class="task-text">Invoice 653 has paid</div>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-icon purple">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="task-text">A new user has been added</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="page-content" id="teaching">
+        <div class="page-content" id="lectures">
             <div class="header">
-                <h1>Teaching Overview: Lectures, Analytics, and Course Management</h1>
-                <p>This section consolidates all teaching-related content for easy management and access.</p>
+                <h1>Lectures</h1>
+                <p>Browse and manage your lecture materials and schedules.</p>
             </div>
-
+            
             <div class="content-card">
-                <h2>1. Upcoming Lectures & Materials</h2>
+                <h2>Upcoming Lectures</h2>
                 <div class="lecture-list">
                     <div class="lecture-card">
                         <h4>Advanced Data Structures</h4>
@@ -141,8 +622,11 @@
                         <p><strong>Location:</strong> Computer Lab 3</p>
                     </div>
                 </div>
-                
-                <h4 style="margin-top: 20px;">Lecture Materials</h4>
+            </div>
+            
+            <div class="content-card">
+                <h2>Lecture Materials</h2>
+                <p>Access all lecture slides, notes, and supplementary materials from this semester.</p>
                 <ul>
                     <li>Introduction to Algorithms (PDF, 2.3 MB)</li>
                     <li>Data Visualization Techniques (PDF, 1.8 MB)</li>
@@ -150,9 +634,16 @@
                     <li>Software Engineering Practices (ZIP, 4.5 MB)</li>
                 </ul>
             </div>
-
+        </div>
+        
+        <div class="page-content" id="charts">
+            <div class="header">
+                <h1>Charts & Analytics</h1>
+                <p>Visualize data with interactive charts and analytics.</p>
+            </div>
+            
             <div class="content-card">
-                <h2>2. Course Performance Charts</h2>
+                <h2>Performance Metrics</h2>
                 <p>Track and analyze key performance indicators with these interactive charts.</p>
                 
                 <div class="chart-section">
@@ -169,17 +660,24 @@
                     </div>
                 </div>
             </div>
-
+        </div>
+        
+        <div class="page-content" id="tabs">
+            <div class="header">
+                <h1>Tabs & Panels</h1>
+                <p>Organize content with tabbed interfaces and panels.</p>
+            </div>
+            
             <div class="content-card">
-                <h2>3. Tabbed Content Example (Research, Teaching, Publications)</h2>
+                <h2>Tabbed Content Example</h2>
                 <div class="tabs-container">
                     <div class="tabs">
-                        <button class="tab-button" data-tab="tab1">Research</button>
+                        <button class="tab-button active" data-tab="tab1">Research</button>
                         <button class="tab-button" data-tab="tab2">Teaching</button>
                         <button class="tab-button" data-tab="tab3">Publications</button>
                     </div>
                     
-                    <div class="tab-content" id="tab1">
+                    <div class="tab-content active" id="tab1">
                         <h3>Current Research Projects</h3>
                         <p>Our research focuses on cutting-edge technologies in computer science and their applications in education.</p>
                         <ul>
@@ -211,11 +709,16 @@
                     </div>
                 </div>
             </div>
-
+        </div>
+        
+        <div class="page-content" id="tables">
+            <div class="header">
+                <h1>Responsive Tables</h1>
+                <p>View and manage data with responsive, interactive tables.</p>
+            </div>
+            
             <div class="content-card">
-                <h2>4. Responsive Student & Course Tables</h2>
-                
-                <h3 style="margin-top: 15px;">Student Information</h3>
+                <h2>Student Information</h2>
                 <div class="table-section">
                     <table>
                         <thead>
@@ -228,15 +731,41 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>S001234</td><td>Alex Johnson</td><td>Computer Science</td><td>2022-09-01</td><td>Active</td></tr>
-                            <tr><td>S001235</td><td>Maria Garcia</td><td>Data Science</td><td>2022-09-01</td><td>Active</td></tr>
-                            <tr><td>S001236</td><td>James Wilson</td><td>Information Systems</td><td>2021-09-01</td><td>Graduated</td></tr>
-                            <tr><td>S001237</td><td>Sarah Chen</td><td>Computer Science</td><td>2022-09-01</td><td>Active</td></tr>
+                            <tr>
+                                <td>S001234</td>
+                                <td>Alex Johnson</td>
+                                <td>Computer Science</td>
+                                <td>2022-09-01</td>
+                                <td>Active</td>
+                            </tr>
+                            <tr>
+                                <td>S001235</td>
+                                <td>Maria Garcia</td>
+                                <td>Data Science</td>
+                                <td>2022-09-01</td>
+                                <td>Active</td>
+                            </tr>
+                            <tr>
+                                <td>S001236</td>
+                                <td>James Wilson</td>
+                                <td>Information Systems</td>
+                                <td>2021-09-01</td>
+                                <td>Graduated</td>
+                            </tr>
+                            <tr>
+                                <td>S001237</td>
+                                <td>Sarah Chen</td>
+                                <td>Computer Science</td>
+                                <td>2022-09-01</td>
+                                <td>Active</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-                
-                <h3 style="margin-top: 25px;">Course Schedule</h3>
+            </div>
+            
+            <div class="content-card">
+                <h2>Course Schedule</h2>
                 <div class="table-section">
                     <table>
                         <thead>
@@ -249,16 +778,41 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>CS101</td><td>Introduction to Programming</td><td>Dr. Smith</td><td>Mon/Wed 10:00-11:30</td><td>Room 201</td></tr>
-                            <tr><td>DS201</td><td>Data Structures</td><td>Dr. Johnson</td><td>Tue/Thu 2:00-3:30</td><td>Room 305</td></tr>
-                            <tr><td>CS301</td><td>Algorithms</td><td>Dr. Williams</td><td>Mon/Wed/Fri 9:00-10:00</td><td>Room 412</td></tr>
+                            <tr>
+                                <td>CS101</td>
+                                <td>Introduction to Programming</td>
+                                <td>Dr. Smith</td>
+                                <td>Mon/Wed 10:00-11:30</td>
+                                <td>Room 201</td>
+                            </tr>
+                            <tr>
+                                <td>DS201</td>
+                                <td>Data Structures</td>
+                                <td>Dr. Johnson</td>
+                                <td>Tue/Thu 2:00-3:30</td>
+                                <td>Room 305</td>
+                            </tr>
+                            <tr>
+                                <td>CS301</td>
+                                <td>Algorithms</td>
+                                <td>Dr. Williams</td>
+                                <td>Mon/Wed/Fri 9:00-10:00</td>
+                                <td>Room 412</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-
+        </div>
+        
+        <div class="page-content" id="forms">
+            <div class="header">
+                <h1>Forms</h1>
+                <p>Create and manage forms for various purposes.</p>
+            </div>
+            
             <div class="content-card">
-                <h2>5. Course Registration Form</h2>
+                <h2>Course Registration Form</h2>
                 <form id="registration-form">
                     <div class="form-group">
                         <label for="student-name">Student Name</label>
@@ -299,15 +853,15 @@
                 </form>
             </div>
         </div>
-
-        <div class="page-content" id="publication">
+        
+        <div class="page-content" id="journal">
             <div class="header">
-                <h1>Publication Overview</h1>
-                <p>A consolidated view of all research output, including journals, conferences, talks, and video content.</p>
+                <h1>Journal Publications</h1>
+                <p>Browse our faculty's journal publications and research papers.</p>
             </div>
-
+            
             <div class="content-card">
-                <h2>1. Journal Publications</h2>
+                <h2>Recent Journal Articles</h2>
                 <ul>
                     <li>
                         <strong>"Advancements in Neural Network Architectures"</strong><br>
@@ -326,24 +880,237 @@
                     </li>
                 </ul>
             </div>
-
-            <div class="content-card">
-                <h2>2. Conference Proceedings & Talks</h2>
-                <p>List of accepted papers and presentations at major conferences will be displayed here.</p>
-                <p><em>Content for Conference and Talk items is currently a placeholder.</em></p>
-            </div>
-
-            <div class="content-card">
-                <h2>3. Video Resources</h2>
-                <p>A library of video tutorials, conference recordings, and lecture recordings.</p>
-                <p><em>Content for Video Tutorials, Conference Recordings, and Lecture Recordings items is currently a placeholder.</em></p>
-            </div>
         </div>
-
+        
         <div class="footer">
             <p>© 2025 Bryce Zhou. All rights reserved.</p>
         </div>
     </div>
 
-    <script src="scripts.js"></script> </body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Page Navigation
+        document.querySelectorAll('.menu-item').forEach(item => {
+            if (item.dataset.page) {
+                item.addEventListener('click', function() {
+                    // Remove active class from all menu items
+                    document.querySelectorAll('.menu-item').forEach(i => {
+                        i.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked menu item
+                    this.classList.add('active');
+                    
+                    // Hide all page content
+                    document.querySelectorAll('.page-content').forEach(page => {
+                        page.classList.remove('active');
+                    });
+                    
+                    // Show selected page content
+                    const pageId = this.dataset.page;
+                    const selectedPage = document.getElementById(pageId);
+                    if (selectedPage) {
+                        selectedPage.classList.add('active');
+                        // Re-initialize dynamic elements (charts, tabs, etc.) when page changes
+                        initDynamicElements(pageId);
+                    }
+                });
+            }
+        });
+        
+        // Toggle dropdown menus
+        document.getElementById('dropdown-toggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('dropdown-menu').classList.toggle('active');
+        });
+        
+        document.getElementById('third-level-toggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('third-level-menu').classList.toggle('active');
+        });
+        
+        // Function to initialize elements that need JavaScript (Charts, Tabs, Forms)
+        function initDynamicElements(pageId) {
+            // Helper function to destroy existing Chart.js instances before re-initializing
+            function destroyChart(id) {
+                if (window[id] instanceof Chart) {
+                    window[id].destroy();
+                }
+            }
+
+            // === 1. Charts ===
+            
+            // Bar chart (In introduction)
+            if (pageId === 'introduction') {
+                const ctx = document.getElementById('barChart');
+                if (ctx) {
+                    destroyChart('barChartInstance');
+                    window.barChartInstance = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                            datasets: [{
+                                label: 'Visitors',
+                                data: [12000, 19000, 15000, 25000, 22000, 30000],
+                                backgroundColor: [
+                                    'rgba(52, 152, 219, 0.7)',
+                                    'rgba(46, 204, 113, 0.7)',
+                                    'rgba(155, 89, 182, 0.7)',
+                                    'rgba(241, 196, 15, 0.7)',
+                                    'rgba(230, 126, 34, 0.7)',
+                                    'rgba(231, 76, 60, 0.7)'
+                                ],
+                                borderColor: [
+                                    'rgba(52, 152, 219, 1)',
+                                    'rgba(46, 204, 113, 1)',
+                                    'rgba(155, 89, 182, 1)',
+                                    'rgba(241, 196, 15, 1)',
+                                    'rgba(230, 126, 34, 1)',
+                                    'rgba(231, 76, 60, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+            } else {
+                destroyChart('barChartInstance');
+            }
+            
+            // Charts page-specific charts
+            if (pageId === 'charts') {
+                const performanceCtx = document.getElementById('performanceChart');
+                if (performanceCtx) {
+                    destroyChart('performanceChartInstance');
+                    window.performanceChartInstance = new Chart(performanceCtx, {
+                        type: 'pie',
+                        data: {
+                            labels: ['Excellent (A)', 'Good (B)', 'Average (C)', 'Below Average (D/F)'],
+                            datasets: [{
+                                data: [35, 40, 20, 5],
+                                backgroundColor: [
+                                    'rgba(46, 204, 113, 0.7)',
+                                    'rgba(52, 152, 219, 0.7)',
+                                    'rgba(241, 196, 15, 0.7)',
+                                    'rgba(231, 76, 60, 0.7)'
+                                ],
+                                borderColor: [
+                                    'rgba(46, 204, 113, 1)',
+                                    'rgba(52, 152, 219, 1)',
+                                    'rgba(241, 196, 15, 1)',
+                                    'rgba(231, 76, 60, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                        }
+                    });
+                }
+                
+                const enrollmentCtx = document.getElementById('enrollmentChart');
+                if (enrollmentCtx) {
+                    destroyChart('enrollmentChartInstance');
+                    window.enrollmentChartInstance = new Chart(enrollmentCtx, {
+                        type: 'line',
+                        data: {
+                            labels: ['2018', '2019', '2020', '2021', '2022', '2023'],
+                            datasets: [{
+                                label: 'Computer Science',
+                                data: [120, 145, 160, 185, 210, 240],
+                                borderColor: 'rgba(52, 152, 219, 1)',
+                                backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            }, {
+                                label: 'Data Science',
+                                data: [80, 95, 120, 150, 180, 210],
+                                borderColor: 'rgba(46, 204, 113, 1)',
+                                backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+            } else {
+                destroyChart('performanceChartInstance');
+                destroyChart('enrollmentChartInstance');
+            }
+
+            // === 2. Tab functionality ===
+            // Remove previous listeners and re-add for tabs on the 'tabs' page
+            document.querySelectorAll('.tab-button').forEach(button => {
+                // Ensure the event listener is only added once
+                button.removeEventListener('click', handleTabClick);
+            });
+            
+            if (pageId === 'tabs') {
+                document.querySelectorAll('.tab-button').forEach(button => {
+                    button.addEventListener('click', handleTabClick);
+                });
+            }
+
+            // === 3. Form submission ===
+            const form = document.getElementById('registration-form');
+            if (form) {
+                form.removeEventListener('submit', handleFormSubmit);
+                if (pageId === 'forms') {
+                    form.addEventListener('submit', handleFormSubmit);
+                }
+            }
+        }
+        
+        function handleTabClick() {
+            const tabId = this.dataset.tab;
+            
+            // Remove active class from all tabs and contents
+            document.querySelectorAll('.tab-button').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab and corresponding content
+            this.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            alert('Course registration submitted successfully!');
+            this.reset();
+        }
+        
+        // Initial setup on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const initialActiveItem = document.querySelector('.menu-item.active');
+            if (initialActiveItem) {
+                // Only run initDynamicElements on DOMContentLoaded to set up charts for the active page
+                initDynamicElements(initialActiveItem.dataset.page);
+            }
+        });
+    </script>
+</body>
 </html>
