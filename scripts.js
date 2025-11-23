@@ -4,7 +4,8 @@ function loadPage(pageId) {
     let contentFile = '';
 
     // Determine which HTML file to load based on the pageId
-    if (pageId === 'introduction') {
+    // MODIFIED LINE: Added 'group-members' to load from 'institute.html'
+    if (['introduction', 'group-members'].includes(pageId)) { 
         contentFile = 'institute.html';
     } else if (['lectures', 'charts', 'tabs', 'tables', 'forms'].includes(pageId)) {
         contentFile = 'teaching.html';
@@ -45,6 +46,8 @@ function loadPage(pageId) {
 }
 
 // --- Dynamic Element Initialization ---
+// (The rest of initDynamicElements and helper functions remain the same)
+
 function initDynamicElements(pageId) {
     // Helper function to destroy existing Chart.js instances before re-initializing
     function destroyChart(id) {
