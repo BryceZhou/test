@@ -6,7 +6,7 @@
     <title>Bryce Zhou Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css"> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+    </head>
 <body>
     <div class="sidebar">
         <div class="logo">
@@ -33,6 +33,7 @@
     </div>
 
     <div class="main-content">
+        
         <div class="page-content active" id="institute">
             <div class="header">
                 <h1>Institute Introduction and Dashboard</h1>
@@ -113,10 +114,231 @@
         </div>
         
         <div class="page-content" id="teaching">
+            <div class="header">
+                <h1>Teaching Overview: Lectures, Analytics, and Course Management</h1>
+                <p>This section consolidates all teaching-related content for easy management and access.</p>
             </div>
 
-        <div class="page-content" id="publication">
+            <div class="content-card">
+                <h2>1. Upcoming Lectures & Materials</h2>
+                <div class="lecture-list">
+                    <div class="lecture-card">
+                        <h4>Advanced Data Structures</h4>
+                        <p><strong>Date:</strong> October 15, 2023</p>
+                        <p><strong>Time:</strong> 10:00 AM - 12:00 PM</p>
+                        <p><strong>Location:</strong> Room 302, Science Building</p>
+                    </div>
+                    <div class="lecture-card">
+                        <h4>Machine Learning Fundamentals</h4>
+                        <p><strong>Date:</strong> October 17, 2023</p>
+                        <p><strong>Time:</strong> 2:00 PM - 4:00 PM</p>
+                        <p><strong>Location:</strong> Room 415, Engineering Building</p>
+                    </div>
+                    <div class="lecture-card">
+                        <h4>Web Development Technologies</h4>
+                        <p><strong>Date:</strong> October 20, 2023</p>
+                        <p><strong>Time:</strong> 9:00 AM - 11:00 AM</p>
+                        <p><strong>Location:</strong> Computer Lab 3</p>
+                    </div>
+                </div>
+                
+                <h4 style="margin-top: 20px;">Lecture Materials</h4>
+                <ul>
+                    <li>Introduction to Algorithms (PDF, 2.3 MB)</li>
+                    <li>Data Visualization Techniques (PDF, 1.8 MB)</li>
+                    <li>Database Design Principles (PDF, 3.1 MB)</li>
+                    <li>Software Engineering Practices (ZIP, 4.5 MB)</li>
+                </ul>
             </div>
+
+            <div class="content-card">
+                <h2>2. Course Performance Charts</h2>
+                <p>Track and analyze key performance indicators with these interactive charts.</p>
+                
+                <div class="chart-section">
+                    <h3>Student Performance Distribution</h3>
+                    <div class="chart-container">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-section">
+                    <h3>Course Enrollment Trends</h3>
+                    <div class="chart-container">
+                        <canvas id="enrollmentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2>3. Tabbed Content Example (Research, Teaching, Publications)</h2>
+                <div class="tabs-container">
+                    <div class="tabs">
+                        <button class="tab-button" data-tab="tab1">Research</button>
+                        <button class="tab-button" data-tab="tab2">Teaching</button>
+                        <button class="tab-button" data-tab="tab3">Publications</button>
+                    </div>
+                    
+                    <div class="tab-content" id="tab1">
+                        <h3>Current Research Projects</h3>
+                        <p>Our research focuses on cutting-edge technologies in computer science and their applications in education.</p>
+                        <ul>
+                            <li>AI-Powered Learning Systems</li>
+                            <li>Data Visualization for Educational Analytics</li>
+                            <li>Blockchain in Academic Credentialing</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="tab-content" id="tab2">
+                        <h3>Teaching Philosophy</h3>
+                        <p>We believe in student-centered learning that combines theoretical foundations with practical applications.</p>
+                        <p>Our teaching methods incorporate:</p>
+                        <ul>
+                            <li>Project-based learning</li>
+                            <li>Collaborative problem-solving</li>
+                            <li>Real-world case studies</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="tab-content" id="tab3">
+                        <h3>Recent Publications</h3>
+                        <p>Our faculty regularly publishes in top-tier journals and conferences.</p>
+                        <ul>
+                            <li>"Machine Learning Approaches to Educational Data Mining" - Journal of Educational Technology, 2023</li>
+                            <li>"Visual Analytics for Student Performance" - IEEE Conference on Visualization, 2022</li>
+                            <li>"Blockchain Applications in Academia" - International Journal of Computer Science, 2022</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2>4. Responsive Student & Course Tables</h2>
+                
+                <h3 style="margin-top: 15px;">Student Information</h3>
+                <div class="table-section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Name</th>
+                                <th>Program</th>
+                                <th>Enrollment Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>S001234</td><td>Alex Johnson</td><td>Computer Science</td><td>2022-09-01</td><td>Active</td></tr>
+                            <tr><td>S001235</td><td>Maria Garcia</td><td>Data Science</td><td>2022-09-01</td><td>Active</td></tr>
+                            <tr><td>S001236</td><td>James Wilson</td><td>Information Systems</td><td>2021-09-01</td><td>Graduated</td></tr>
+                            <tr><td>S001237</td><td>Sarah Chen</td><td>Computer Science</td><td>2022-09-01</td><td>Active</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3 style="margin-top: 25px;">Course Schedule</h3>
+                <div class="table-section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Course Code</th>
+                                <th>Course Name</th>
+                                <th>Instructor</th>
+                                <th>Schedule</th>
+                                <th>Room</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>CS101</td><td>Introduction to Programming</td><td>Dr. Smith</td><td>Mon/Wed 10:00-11:30</td><td>Room 201</td></tr>
+                            <tr><td>DS201</td><td>Data Structures</td><td>Dr. Johnson</td><td>Tue/Thu 2:00-3:30</td><td>Room 305</td></tr>
+                            <tr><td>CS301</td><td>Algorithms</td><td>Dr. Williams</td><td>Mon/Wed/Fri 9:00-10:00</td><td>Room 412</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2>5. Course Registration Form</h2>
+                <form id="registration-form">
+                    <div class="form-group">
+                        <label for="student-name">Student Name</label>
+                        <input type="text" id="student-name" name="student-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="student-id">Student ID</label>
+                        <input type="text" id="student-id" name="student-id" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="course-select">Select Course</label>
+                        <select id="course-select" name="course-select" required>
+                            <option value="">Choose a course</option>
+                            <option value="CS101">CS101 - Introduction to Programming</option>
+                            <option value="DS201">DS201 - Data Structures</option>
+                            <option value="CS301">CS301 - Algorithms</option>
+                            <option value="CS401">CS401 - Database Systems</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="semester">Semester</label>
+                        <select id="semester" name="semester" required>
+                            <option value="">Select semester</option>
+                            <option value="fall2023">Fall 2023</option>
+                            <option value="spring2024">Spring 2024</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="comments">Additional Comments</label>
+                        <textarea id="comments" name="comments" rows="4"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-button">Register Course</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="page-content" id="publication">
+            <div class="header">
+                <h1>Publication Overview</h1>
+                <p>A consolidated view of all research output, including journals, conferences, talks, and video content.</p>
+            </div>
+
+            <div class="content-card">
+                <h2>1. Journal Publications</h2>
+                <ul>
+                    <li>
+                        <strong>"Advancements in Neural Network Architectures"</strong><br>
+                        <em>Journal of Artificial Intelligence Research, 2023</em><br>
+                        Authors: Bryce Zhou, Maria Rodriguez, James Wilson
+                    </li>
+                    <li>
+                        <strong>"Data Privacy in Educational Technology"</strong><br>
+                        <em>International Journal of Computer Security, 2022</em><br>
+                        Authors: Sarah Chen, Bryce Zhou
+                    </li>
+                    <li>
+                        <strong>"Visual Analytics for Large Educational Datasets"</strong><br>
+                        <em>IEEE Transactions on Visualization, 2022</em><br>
+                        Authors: Bryce Zhou, Alex Johnson
+                    </li>
+                </ul>
+            </div>
+
+            <div class="content-card">
+                <h2>2. Conference Proceedings & Talks</h2>
+                <p>List of accepted papers and presentations at major conferences will be displayed here.</p>
+                <p><em>Content for Conference and Talk items is currently a placeholder.</em></p>
+            </div>
+
+            <div class="content-card">
+                <h2>3. Video Resources</h2>
+                <p>A library of video tutorials, conference recordings, and lecture recordings.</p>
+                <p><em>Content for Video Tutorials, Conference Recordings, and Lecture Recordings items is currently a placeholder.</em></p>
+            </div>
+        </div>
 
         <div class="footer">
             <p>© 2025 Bryce Zhou. All rights reserved.</p>
